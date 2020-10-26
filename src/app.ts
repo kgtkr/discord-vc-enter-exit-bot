@@ -33,19 +33,25 @@ async function sendNotification({
   member: Discord.GuildMember;
 }) {
   if (!member.user.bot) {
-    const msg = await findTextChannel({ guild, vcId: vc.id }).send(
+    const channel = findTextChannel({ guild, vcId: vc.id });
+    const msg = await channel.send(
       `${
         member?.nickname ?? member?.user.username
       }が${type}しました。(現在${countMember({ vc })}人)`
     );
 
-    setTimeout(async () => {
-      try {
-        await msg.delete();
-      } catch (e) {
-        console.error(e);
-      }
-    }, 5 * 60 * 1000);
+    if (
+      channel.topic === null ||
+      !channel.topic.includes("<vc-enter-exit::disable-delete>")
+    ) {
+      setTimeout(async () => {
+        try {
+          await msg.delete();
+        } catch (e) {
+          console.error(e);
+        }
+      }, 5 * 60 * 1000);
+    }
   }
 }
 
