@@ -33,19 +33,11 @@ async function sendNotification({
   member: Discord.GuildMember;
 }) {
   if (!member.user.bot) {
-    const msg = await findTextChannel({ guild, vcId: vc.id }).send(
+    await findTextChannel({ guild, vcId: vc.id }).send(
       `${
         member?.nickname ?? member?.user.username
       }が${type}しました。(現在${countMember({ vc })}人)`
     );
-
-    setTimeout(async () => {
-      try {
-        await msg.delete();
-      } catch (e) {
-        console.error(e);
-      }
-    }, 5 * 60 * 1000);
   }
 }
 
