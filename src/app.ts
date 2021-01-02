@@ -34,8 +34,9 @@ async function sendNotification({
 }) {
   if (!member.user.bot) {
     await findTextChannel({ guild, vcId: vc.id }).send(
-      `${Discord.Util.escapeMarkdown(
-        member?.nickname ?? member?.user.username
+      `${(member?.nickname ?? member?.user.username).replace(
+        /(?=[!-@])/g,
+        "\\"
       )}が${type}しました。(現在${countMember({ vc })}人)`
     );
   }
