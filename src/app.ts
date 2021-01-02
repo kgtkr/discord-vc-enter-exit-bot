@@ -35,7 +35,7 @@ async function sendNotification({
   if (!member.user.bot) {
     await findTextChannel({ guild, vcId: vc.id }).send(
       `${(member?.nickname ?? member?.user.username).replace(
-        /(?=[!-@])/g,
+        /(?=[!-\.])/g,
         "\\"
       )}が${type}しました。(現在${countMember({ vc })}人)`
     );
